@@ -11,7 +11,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.Random;
 
@@ -20,15 +19,8 @@ public class Game extends JPanel implements ActionListener {
     private final int size = 700;
     private final int dotSize = 70;
     private final int allDots = 100;
-    private BufferedImage dot;
-    private BufferedImage apple;
-    private BufferedImage background;
-    private BufferedImage apex;
-    private BufferedImage stone;
-    private int appleX;
-    private int appleY;
-    private int stoneX;
-    private int stoneY;
+    private BufferedImage dot, apple, background, apex, stone;
+    private int appleX, appleY, stoneX, stoneY;
     private int[] x = new int[allDots];
     private int[] y = new int[allDots];
     private int dots;
@@ -109,8 +101,6 @@ public class Game extends JPanel implements ActionListener {
 
     public void audioStart() {
         try {
-//            File file = new File(Window.class.getResource("sound.wav").toURI());
-//            InputStream inputStream = getClass().getResourceAsStream("sound.wav");
             URL url = getClass().getResource("sound.wav");
             Clip clip = AudioSystem.getClip();
             clip.open(AudioSystem.getAudioInputStream(url));
@@ -122,22 +112,10 @@ public class Game extends JPanel implements ActionListener {
     }
 
     public void loadImages() {
-//        ImageIcon iia = new ImageIcon("src/res/apple.png");
-//        apple = iia.getImage();
-//        ImageIcon iid = new ImageIcon("src/res/dot.png");
-//        dot = iid.getImage();
-//        ImageIcon iib = new ImageIcon("src/res/backGround.png");
-//        background = iib.getImage();
-//        ImageIcon iip = new ImageIcon("src/res/Apex.png");
-//        apex = iip.getImage();
-//        ImageIcon iis = new ImageIcon("src/res/dot.png");
-//        stone = iis.getImage();
-
         try {
             apple = ImageIO.read(getClass().getResource("apple.png"));
             dot = ImageIO.read(getClass().getResource("dot.png"));
             background = ImageIO.read(getClass().getResource("backGround.png"));
-            apex = ImageIO.read(getClass().getResource("Apex.png"));
             stone = ImageIO.read(getClass().getResource("dot.png"));
         } catch (IOException e) {
             e.printStackTrace();
@@ -159,6 +137,11 @@ public class Game extends JPanel implements ActionListener {
     public void createApple() {
         appleX = new Random().nextInt(10) * dotSize;
         appleY = new Random().nextInt(10) * dotSize;
+    }
+
+    public void createStone() {
+        stoneX = new Random().nextInt(10) * dotSize;
+        stoneY = new Random().nextInt(10) * dotSize;
     }
 
     public void checkApple() {
@@ -242,7 +225,6 @@ public class Game extends JPanel implements ActionListener {
             }
         } else {
             timer.stop();
-            g.drawImage(apex, 100, 100, this);
             g.drawString("Вы проиграли! " + "СЧЕТ: " + String.valueOf(dots - 3), 210, 300);
             b1.setSize(150, 50);
             b1.setLocation(300, 400);
@@ -251,13 +233,6 @@ public class Game extends JPanel implements ActionListener {
 
         }
     }
-
-
-    public void createStone() {
-        stoneX = new Random().nextInt(10) * dotSize;
-        stoneY = new Random().nextInt(10) * dotSize;
-    }
-
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -269,7 +244,6 @@ public class Game extends JPanel implements ActionListener {
         }
         repaint();
     }
-
 
     class FieldKeyListener extends KeyAdapter {
         @Override
@@ -299,6 +273,4 @@ public class Game extends JPanel implements ActionListener {
             }
         }
     }
-
-
 }
